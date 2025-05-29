@@ -54,7 +54,7 @@ export default function App() {
       <View style={styles.forecast}>
         <View style={styles.forecastItem}>
           <Text style={styles.forecastText}>Nascer do sol: {results?.sunrise}</Text>
-          <Text style={styles.forecastText}>Morrer do sol: {results?.sunset}</Text>
+          <Text style={styles.forecastText}>Por do sol: {results?.sunset}</Text>
         </View>
         <View style={styles.forecastItem}>
           <Text style={styles.forecastText}>direção do vento: {results?.wind_direction}°</Text>
