@@ -12,7 +12,7 @@ import { color } from 'react-native-elements/dist/helpers';
 export default function App() {
   const [weatherInfo, setWeatherInfo] = useState('');
   const [cidade, setCidade] = useState('');
-  const link = `https://cors-anywhere.herokuapp.com/https://api.hgbrasil.com/weather?key=96ec0872&city_name=${cidade}`;
+  const link = `https://cors-anywhere.herokuapp.com/https://api.hgbrasil.com/weather?key=7667aee8&city_name=${cidade}`;
 
   const attPag = (() => {    
     axios.get(link)
