@@ -13,7 +13,6 @@ export default function App() {
   const [weatherInfo, setWeatherInfo] = useState('');
   const [cidade, setCidade] = useState('');
   const link = `https://cors-anywhere.herokuapp.com/https://api.hgbrasil.com/weather?key=7667aee8&city_name=${cidade}`;
-
   const attPag = (() => {    
     axios.get(link)
     .then(response => setWeatherInfo(response.data))
@@ -23,33 +22,33 @@ export default function App() {
 
   
   const { results } = weatherInfo;
-  const forecastDays = 8;
+  const limit = 4;
   return (
     <View style={styles.container}>
       <Input style={{backgroundColor: "white"}}placeholder='Cidade' value={cidade} onChangeText={setCidade}></Input>
       <Button onPress={attPag} title='Procurar'></Button>
       <StatusBar style="light" />
       <View style={styles.header}> 
-        <Text style={styles.city}>{results?.city}</Text>
-        {results?.forecast.slice(0, 1).map((day, i) =>
+        <Text style={styles.cityName}>{results?.city}</Text>
+        {results?.forecast.slice(0, 1).map((item, i) =>
           <SvgUri
             key={i}
-            uri={`https://cors-anywhere.herokuapp.com/https://assets.hgbrasil.com/weather/icons/conditions/${day.condition}.svg`}
+            uri={`https://cors-anywhere.herokuapp.com/https://assets.hgbrasil.com/weather/icons/conditions/${item.condition}.svg`}
           />  
         )}
         <Text style={styles.date}>{results?.date}</Text>
       </View>
 
-      <View style={styles.main}>
+      <View style={styles.mainInfo}>
         <Text style={styles.temp}>{results?.temp}°C</Text>
         <Text style={styles.rainLabel}>precipitações</Text>
         <Text style={styles.tempRange}>max: {results?.forecast[0].max}°C, min: {results?.forecast[0].min}°C </Text>
       </View>
 
-      <View style={styles.stats}>
-        <Text style={styles.stat}>umidade: {results?.humidity}%</Text>
-        <Text style={styles.stat}>Chuva: {results?.forecast[0].rain_probability} %</Text>
-        <Text style={styles.stat}>Vento: {results?.wind_speedy}</Text>
+      <View style={styles.details}>
+        <Text style={styles.detailText}>umidade: {results?.humidity}%</Text>
+        <Text style={styles.detailText}>Chuva: {results?.forecast[0].rain_probability} %</Text>
+        <Text style={styles.detailText}>Vento: {results?.wind_speedy}</Text>
       </View>
 
       <View style={styles.forecast}>
@@ -67,7 +66,7 @@ export default function App() {
       <View style={styles.forecast}>
         <View style={styles.forecastItem}>
           <SvgUri
-              uri={`https://cors-anywhere.herokuapp.com/https://assets.hgbrasil.com/weather/icons/conditions/${day.condition}.svg`}
+              uri={`https://cors-anywhere.herokuapp.com/https://assets.hgbrasil.com/weather/icons/conditions/${item.condition}.svg`}
             />  
           <Text style={styles.forecastText}>precipitações:</Text>
           <Text style={styles.forecastText}>{item.date}</Text>
