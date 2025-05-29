@@ -36,13 +36,13 @@ export default function App() {
             uri={`https://cors-anywhere.herokuapp.com/https://assets.hgbrasil.com/weather/icons/conditions/${item.condition}.svg`}
           />  
         )}
-        <Text style={styles.date}>{results?.date}</Text>
+        <Text style={styles.cityName}>{results?.date}</Text>
       </View>
 
       <View style={styles.mainInfo}>
-        <Text style={styles.temp}>{results?.temp}°C</Text>
-        <Text style={styles.rainLabel}>precipitações</Text>
-        <Text style={styles.tempRange}>max: {results?.forecast[0].max}°C, min: {results?.forecast[0].min}°C </Text>
+        <Text style={styles.temperature}>{results?.temp}°C</Text>
+        <Text style={styles.precipitation}>precipitações</Text>
+        <Text style={styles.minMax}>max: {results?.forecast[0].max}°C, min: {results?.forecast[0].min}°C </Text>
       </View>
 
       <View style={styles.details}>
