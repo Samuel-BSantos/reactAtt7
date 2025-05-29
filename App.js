@@ -1,45 +1,55 @@
 import { StatusBar } from 'expo-status-bar';
+import {Input} from 'react-native-elements';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
-import axios from 'axios'
-import { SafeAreaView } from 'react-native-web';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import axios from 'axios';
+import { SvgUri } from 'react-native-svg';
+import { Button } from 'react-native-web';
+import { color } from 'react-native-elements/dist/helpers';
 
-const link = "https://cors-anywhere.herokuapp.com/https://api.hgbrasil.com/weather?key=0763dd72&city_name=Recife,PE";
+
 
 export default function App() {
-const [allinformations, setAllinformations] = useState('');
+  const [weatherInfo, setWeatherInfo] = useState('');
+  const [cidade, setCidade] = useState('');
+  const link = `https://cors-anywhere.herokuapp.com/https://api.hgbrasil.com/weather?key=96ec0872&city_name=${cidade}`;
 
-  useEffect(() => {    
+  const attPag = (() => {    
     axios.get(link)
-    .then(response => setAllinformations(response.data))
-    .catch(error => console.error('Error', error));
-  }, []);
+    .then(response => setWeatherInfo(response.data))
+    .catch(error => console.error('API Error', error));
+  });
+
+
   
-  const { results } = allinformations;
-  const limit = 4;
-  
+  const { results } = weatherInfo;
+  const forecastDays = 8;
   return (
     <View style={styles.container}>
+      <Input style={{backgroundColor: "white"}}placeholder='Cidade' value={cidade} onChangeText={setCidade}></Input>
+      <Button onPress={attPag} title='Procurar'></Button>
       <StatusBar style="light" />
-      
       <View style={styles.header}> 
-        <Text style={styles.cityName}>{results?.city}</Text>
-        <Image
-        source = {require('./cloudly_day.svg')}
-        />    
-        <Text style={styles.cityName}>{results?.date}</Text>
+        <Text style={styles.city}>{results?.city}</Text>
+        {results?.forecast.slice(0, 1).map((day, i) =>
+          <SvgUri
+            key={i}
+            uri={`https://cors-anywhere.herokuapp.com/https://assets.hgbrasil.com/weather/icons/conditions/${day.condition}.svg`}
+          />  
+        )}
+        <Text style={styles.date}>{results?.date}</Text>
       </View>
 
-      <View style={styles.mainInfo}>
-        <Text style={styles.temperature}>{results?.temp}°C</Text>
-        <Text style={styles.precipitation}>precipitações</Text>
-        <Text style={styles.minMax}>max: {results?.forecast[0].max}°C, min: {results?.forecast[0].min}°C </Text>
+      <View style={styles.main}>
+        <Text style={styles.temp}>{results?.temp}°C</Text>
+        <Text style={styles.rainLabel}>precipitações</Text>
+        <Text style={styles.tempRange}>max: {results?.forecast[0].max}°C, min: {results?.forecast[0].min}°C </Text>
       </View>
 
-      <View style={styles.details}>
-        <Text style={styles.detailText}>umidade: {results?.humidity}%</Text>
-        <Text style={styles.detailText}>Chuva: {results?.forecast[0].rain_probability} %</Text>
-        <Text style={styles.detailText}>Vento: {results?.wind_speedy}</Text>
+      <View style={styles.stats}>
+        <Text style={styles.stat}>umidade: {results?.humidity}%</Text>
+        <Text style={styles.stat}>Chuva: {results?.forecast[0].rain_probability} %</Text>
+        <Text style={styles.stat}>Vento: {results?.wind_speedy}</Text>
       </View>
 
       <View style={styles.forecast}>
@@ -56,9 +66,9 @@ const [allinformations, setAllinformations] = useState('');
         {results?.forecast.slice(0, limit).map((item, i) => (
       <View style={styles.forecast}>
         <View style={styles.forecastItem}>
-          <Image
-          source = {require('./cloudly_day.svg')}
-          />
+          <SvgUri
+              uri={`https://cors-anywhere.herokuapp.com/https://assets.hgbrasil.com/weather/icons/conditions/${day.condition}.svg`}
+            />  
           <Text style={styles.forecastText}>precipitações:</Text>
           <Text style={styles.forecastText}>{item.date}</Text>
           <Text style={styles.forecastText}>max: {item.max}°C</Text>
